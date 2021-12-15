@@ -8,3 +8,4 @@ This is an Apple II emulator.
 `mkdir build` <br>
 `cd build` <br>
 `cmake ../` <br>
+`make`
