@@ -13,7 +13,10 @@ PINS _calculate_pin_status(CPU);
 // advance the program counter
 void _proceed(CPU* cpu);
 
-// set a byte in memory, calling the system as needed.
-void _set_byte(CPU* cpu, uint8_t value);
+// set a byte in the zero page, calling the system as needed.
+void _set_byte_zp(CPU* cpu, uint8_t value);
+
+// sets the data bus to the value of a byte in the zero page.
+void _get_byte_zp(CPU* cpu, uint8_t address);
 
 #endif

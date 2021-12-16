@@ -20,13 +20,19 @@ void _proceed(CPU* cpu)
     _tick_system(cpu, _calculate_pin_status(*cpu));
 }
 
-void _set_byte(CPU* cpu, uint8_t value) 
+void _set_byte_zp(CPU* cpu, uint8_t value) 
 {
     cpu->ab = cpu->db;
     cpu->rw = 0;
     cpu->db = value;
     _tick_system(cpu, _calculate_pin_status(*cpu));
     cpu->rw = 1;
+}
+
+void _get_byte_zp(CPU* cpu, uint8_t address) 
+{
+    cpu->ab = address;
+    _tick_system(cpu, _calculate_pin_status(*cpu));
 }
 
 void set_db(CPU* cpu, uint8_t value) { cpu->db = value; }
@@ -85,13 +91,48 @@ void execute(CPU* cpu, unsigned int cycles)
             
                 break;
             }
-        
+            
+            case 0xa5:
+            {
+               _proceed(cpu);
+               --cycles;
+               
+               _get_byte_zp(cpu, cpu->db);
+               --cycles;
+               
+               cpu->A = cpu->db;
+
+               cpu->Z = cpu->A == 0 ? 1 : 0;
+               cpu->N = (0b00000001 & cpu->A) == 0b00000001 ? 1 : 0;
+
+               break;
+            }
+
+            case 0xb5:
+            {
+                _proceed(cpu);
+                --cycles;
+                
+                cpu->ab = cpu->db;
+                cpu->PC++;
+                _tick_system(cpu, _calculate_pin_status(*cpu));
+                --cycles;
+                
+                _get_byte_zp(cpu, (uint8_t) cpu->ab + cpu->db);
+                --cycles;
+
+                cpu->Z = cpu->A == 0 ? 1 : 0;
+                cpu->N = (0b00000001 & cpu->A) == 0b00000001 ? 1 : 0;
+
+                break;
+            }
+
             case 0x85:
             {
                 _proceed(cpu);
                 --cycles;
             
-                _set_byte(cpu, cpu->A);
+                _set_byte_zp(cpu, cpu->A);
                 --cycles;
 
                 break;
