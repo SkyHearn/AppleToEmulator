@@ -137,7 +137,7 @@ void execute(CPU* cpu, unsigned int cycles)
                 _proceed(cpu);
                 --cycles;
                 
-                cpu->X = cpu->db
+                cpu->X = cpu->db;
 
                 cpu->Z = cpu->X == 0 ? 1 : 0;
                 cpu->N = (0b00000001 & cpu->X) == 0b00000001 ? 1 : 0;

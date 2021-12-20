@@ -24,3 +24,11 @@ add_test(NAME LDA_z_flag_test
 add_test(NAME STA_test
          COMMAND "${PROJECT_BINARY_DIR}/unit_tests/unit_tests"
          [3])
+
+add_test(NAME LDA_ZP
+         COMMAND "${PROJECT_BINARY_DIR}/unit_tests/unit_tests"
+         [4])
+
+add_test(NAME LDA_ZP_X
+         COMMAND "${PROJECT_BINARY_DIR}/unit_tests/unit_tests"
+         [5])

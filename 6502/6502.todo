@@ -1,9 +1,4 @@
-- [x] Calculate current pin status.
 - [] Encapsulate the 6502 library.
-- [x] Replace _calculate_pin_status() with something not stupid.
-- [] Output current pin status on _tick_system().
-- [] Write unit tests for each instruction and addressing mode.
+- [] Write unit tests for each instruction and addressing mode currently implemented
 - [] Implement each instruction and addressing mode.
 - [] Sort out a style guide.
-- [x] Move the memory off the CPU
-- [x] Write a function to initialze the 6502 library.

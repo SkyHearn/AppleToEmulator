@@ -47,6 +47,10 @@ int main(int argc, char** argv)
             return LDA_z_flag_test();
         case 3:
             return STA_test();
+        case 4:
+            return LDA_zp_test();
+        case 5:
+            return LDA_zp_X_test();
         default:
             printf("No test with number: %ld \n", test_num);
             return 2;
@@ -125,4 +129,48 @@ int STA_test()
     execute(&cpu, 5);
     
     return assert(mem[0] == 0x69);
+}
+
+int LDA_zp_test() 
+{
+    mem[0] = 0xa5;
+    mem[1] = 0x00;
+    mem[0xFFFC] = 0x00;
+    mem[0xFFFD] = 0x00;
+
+    CPU cpu = initialize_cpu(mem);
+
+    set_tick_cb(&on_system_tick);
+    execute(&cpu, 3);
+
+    int rval = 0;
+
+    rval += assert(cpu.A == 0xa5);
+    rval += assert(cpu.N == 1);
+    rval += assert(cpu.Z == 0);
+
+    return rval;
+}
+
+int LDA_zp_X_test() 
+{
+    mem[0] = 0xa2;
+    mem[1] = 1;
+    mem[3] = 0xb5;
+    mem[4] = 2;
+    mem[0xFFFC] = 0;
+    mem[0xFFFD] = 0;
+
+    CPU cpu = initialize_cpu(mem);
+
+    set_tick_cb(&on_system_tick);
+    execute(&cpu, 5);
+    
+    int rval = 0;
+
+    rval += assert(cpu.A == 0xb5);
+    rval += assert(cpu.N == 1);
+    rval += assert(cpu.Z == 0);
+
+    return rval;
 }

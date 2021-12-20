@@ -14,5 +14,7 @@ int LDA_immediate_test();
 int LDA_neg_flag_test();
 int LDA_z_flag_test();
 int STA_test();
+int LDA_zp_test();
+int LDA_zp_X_test();
 
 #endif
