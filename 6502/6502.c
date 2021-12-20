@@ -92,6 +92,7 @@ void execute(CPU* cpu, unsigned int cycles)
                 break;
             }
             
+            // LDA ZP
             case 0xa5:
             {
                _proceed(cpu);
@@ -107,7 +108,8 @@ void execute(CPU* cpu, unsigned int cycles)
 
                break;
             }
-
+            
+            // LDA ZP, X
             case 0xb5:
             {
                 _proceed(cpu);
@@ -118,11 +120,66 @@ void execute(CPU* cpu, unsigned int cycles)
                 _tick_system(cpu, _calculate_pin_status(*cpu));
                 --cycles;
                 
-                _get_byte_zp(cpu, (uint8_t) cpu->ab + cpu->db);
+                _get_byte_zp(cpu, cpu->X + cpu->db);
                 --cycles;
+                
+                cpu->A = cpu->db;
 
                 cpu->Z = cpu->A == 0 ? 1 : 0;
                 cpu->N = (0b00000001 & cpu->A) == 0b00000001 ? 1 : 0;
+
+                break;
+            }
+
+            // LDX #
+            case 0xa2:
+            {
+                _proceed(cpu);
+                --cycles;
+                
+                cpu->X = cpu->db
+
+                cpu->Z = cpu->X == 0 ? 1 : 0;
+                cpu->N = (0b00000001 & cpu->X) == 0b00000001 ? 1 : 0;
+
+                break;
+            }
+
+            // LDX ZP
+            case 0xa6:
+            {
+                _proceed(cpu);
+                --cycles;
+               
+                _get_byte_zp(cpu, cpu->db);
+                --cycles;
+                
+                cpu->X = cpu->db;
+
+                cpu->Z = cpu->X == 0 ? 1 : 0;
+                cpu->N = (0b00000001 & cpu->X) == 0b00000001 ? 1 : 0;
+
+                break;           
+            }
+
+            // LDX ZP, Y
+            case 0xb6:
+            {
+                _proceed(cpu);
+                --cycles;
+                
+                cpu->ab = cpu->db;
+                cpu->PC++;
+                _tick_system(cpu, _calculate_pin_status(*cpu));
+                --cycles;
+                
+                _get_byte_zp(cpu, (uint8_t) cpu->Y + cpu->db);
+                --cycles;
+
+                cpu->X = cpu->db;
+
+                cpu->Z = cpu->X == 0 ? 1 : 0;
+                cpu->N = (0b00000001 & cpu->X) == 0b00000001 ? 1 : 0;
 
                 break;
             }
