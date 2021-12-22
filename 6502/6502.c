@@ -88,7 +88,7 @@ void execute(CPU* cpu, unsigned int cycles)
             
                 // set the zero and negitive flags to their proper values
                 cpu->Z = cpu->A == 0 ? 1 : 0;
-                cpu->N = (0b00000001 & cpu->A) == 0b00000001 ? 1 : 0;
+                cpu->N = (1 & cpu->A) == 1 ? 1 : 0;
             
                 break;
             }
@@ -105,7 +105,7 @@ void execute(CPU* cpu, unsigned int cycles)
                cpu->A = cpu->db;
 
                cpu->Z = cpu->A == 0 ? 1 : 0;
-               cpu->N = (0b00000001 & cpu->A) == 0b00000001 ? 1 : 0;
+               cpu->N = (1 & cpu->A) == 1 ? 1 : 0;
 
                break;
             }
@@ -127,7 +127,7 @@ void execute(CPU* cpu, unsigned int cycles)
                 cpu->A = cpu->db;
 
                 cpu->Z = cpu->A == 0 ? 1 : 0;
-                cpu->N = (0b00000001 & cpu->A) == 0b00000001 ? 1 : 0;
+                cpu->N = (1 & cpu->A) == 1 ? 1 : 0;
 
                 break;
             }
@@ -141,7 +141,7 @@ void execute(CPU* cpu, unsigned int cycles)
                 cpu->X = cpu->db;
 
                 cpu->Z = cpu->X == 0 ? 1 : 0;
-                cpu->N = (0b00000001 & cpu->X) == 0b00000001 ? 1 : 0;
+                cpu->N = (1 & cpu->X) == 1 ? 1 : 0;
 
                 break;
             }
@@ -158,7 +158,7 @@ void execute(CPU* cpu, unsigned int cycles)
                 cpu->X = cpu->db;
 
                 cpu->Z = cpu->X == 0 ? 1 : 0;
-                cpu->N = (0b00000001 & cpu->X) == 0b00000001 ? 1 : 0;
+                cpu->N = (1 & cpu->X) == 1 ? 1 : 0;
 
                 break;           
             }
@@ -180,7 +180,7 @@ void execute(CPU* cpu, unsigned int cycles)
                 cpu->X = cpu->db;
 
                 cpu->Z = cpu->X == 0 ? 1 : 0;
-                cpu->N = (0b00000001 & cpu->X) == 0b00000001 ? 1 : 0;
+                cpu->N = (1 & cpu->X) == 1 ? 1 : 0;
 
                 break;
             }

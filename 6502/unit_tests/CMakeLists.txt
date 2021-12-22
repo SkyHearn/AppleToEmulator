@@ -3,7 +3,7 @@ add_executable(unit_tests
                unit_tests.h
                unit_tests.c)
 
-target_link_libraries(unit_tests lib6502)
+target_link_libraries(unit_tests 6502)
 
 target_include_directories(unit_tests PUBLIC 
                            "${PROJECT_BINARY_DIR}" 

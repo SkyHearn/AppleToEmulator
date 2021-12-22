@@ -3,7 +3,7 @@ project(6502_simulator)
 
 add_subdirectory("unit_tests")
 
-add_library(lib6502
+add_library(6502
     STATIC
         include/6502.h
         6502-internal.h
