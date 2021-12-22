@@ -1,4 +1,5 @@
 #include "6502-internal.h"
+#include <stdlib.h>
 #include <stdio.h>
 
 void (*tick_cb) (CPU* cpu, PINS);
@@ -197,7 +198,9 @@ void execute(CPU* cpu, unsigned int cycles)
 
             default:
             {
-                printf("Unknown Instruction\n");
+                //TODO: Replace with an "Unknown Instruction Handler calllback"
+                printf("Unknown Instruction: %i\n", cpu->db);
+                exit(1);
             }
         }
     }

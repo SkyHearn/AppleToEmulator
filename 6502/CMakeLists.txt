@@ -1,11 +1,9 @@
 cmake_minimum_required (VERSION 3.12)
 project(6502_simulator)
 
-enable_testing()
-
 add_subdirectory("unit_tests")
 
-add_library(6502
+add_library(lib6502
     STATIC
         include/6502.h
         6502-internal.h

@@ -10,11 +10,12 @@
 int assert_failed(int line, char *file);
 int assert_passed(int line, char *file);
 
-int LDA_immediate_test();
-int LDA_neg_flag_test();
-int LDA_z_flag_test();
-int STA_test();
-int LDA_zp_test();
-int LDA_zp_X_test();
+void LDA_immediate_test();
+void LDA_neg_flag_test();
+void LDA_z_flag_test();
+void STA_test();
+void LDA_zp_test();
+void LDA_zp_X_test();
+void LDX_immediate_test();
 
 #endif

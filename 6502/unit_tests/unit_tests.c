@@ -22,6 +22,7 @@ int assert_passed(int line, char *file)
 
 int main(int argc, char** argv) 
 {
+
     if (argc > 2) 
     {
         printf("Too many arguments. \n");
@@ -36,21 +37,31 @@ int main(int argc, char** argv)
     
     char* str;
     long int test_num = strtol(argv[1], &str , 10);
-
+     
+    printf("running test_num: %li\n", test_num);
     switch (test_num) 
     {
         case 0:
-            return LDA_immediate_test();
+            LDA_immediate_test();
+            break;
         case 1:
-            return LDA_neg_flag_test();
+            LDA_neg_flag_test();
+            break;
         case 2:
-            return LDA_z_flag_test();
+            LDA_z_flag_test();
+            break;
         case 3:
-            return STA_test();
+            STA_test();
+            break;
         case 4:
-            return LDA_zp_test();
+            LDA_zp_test();
+            break;
         case 5:
-            return LDA_zp_X_test();
+            LDA_zp_X_test();
+            break;
+        case 6:
+            LDX_immediate_test();
+            break;
         default:
             printf("No test with number: %ld \n", test_num);
             return 2;
@@ -68,7 +79,7 @@ void on_system_tick(CPU *cpu, PINS ps)
     }
 }
 
-int LDA_immediate_test() 
+void LDA_immediate_test() 
 {
     mem[0] = 0xa9;
     mem[1] = 0xFF;
@@ -80,10 +91,10 @@ int LDA_immediate_test()
 
     execute(&cpu, 2);
 
-    return assert(cpu.A == 0xFF);
+    exit(assert(cpu.A == 0xFF));
 }
 
-int LDA_neg_flag_test()
+void LDA_neg_flag_test()
 {
     mem[0] = 0xa9;
     mem[1] = 0xFF;
@@ -95,11 +106,11 @@ int LDA_neg_flag_test()
     set_tick_cb(&on_system_tick);
     execute(&cpu, 2);
 
-    return assert(cpu.N == 1);
+    exit(assert(cpu.N == 1));
 }
 
 // zero flag test
-int LDA_z_flag_test()
+void LDA_z_flag_test()
 {
     mem[0] = 0xa9;
     mem[1] = 0x00;
@@ -110,11 +121,11 @@ int LDA_z_flag_test()
 
     set_tick_cb(&on_system_tick);
     execute(&cpu, 2);
-
-    return assert(cpu.Z == 1);
+    
+    exit(assert(cpu.Z == 1));
 }
 
-int STA_test()
+void STA_test()
 {
     mem[0] = 0xa9;
     mem[1] = 0x69; // nice
@@ -127,11 +138,11 @@ int STA_test()
 
     set_tick_cb(&on_system_tick);
     execute(&cpu, 5);
-    
-    return assert(mem[0] == 0x69);
+   
+    exit(assert(mem[0] == 0x69));
 }
 
-int LDA_zp_test() 
+void LDA_zp_test() 
 {
     mem[0] = 0xa5;
     mem[1] = 0x00;
@@ -149,22 +160,22 @@ int LDA_zp_test()
     rval += assert(cpu.N == 1);
     rval += assert(cpu.Z == 0);
 
-    return rval;
+    exit(rval);
 }
 
-int LDA_zp_X_test() 
+void LDA_zp_X_test() 
 {
     mem[0] = 0xa2;
     mem[1] = 1;
-    mem[3] = 0xb5;
-    mem[4] = 2;
+    mem[2] = 0xb5;
+    mem[3] = 1;
     mem[0xFFFC] = 0;
     mem[0xFFFD] = 0;
 
     CPU cpu = initialize_cpu(mem);
 
     set_tick_cb(&on_system_tick);
-    execute(&cpu, 5);
+    execute(&cpu, 6);
     
     int rval = 0;
 
@@ -172,5 +183,21 @@ int LDA_zp_X_test()
     rval += assert(cpu.N == 1);
     rval += assert(cpu.Z == 0);
 
-    return rval;
+    exit(rval);
+}
+
+void LDX_immediate_test()
+{
+    mem[0] = 0xa2;
+    mem[1] = 1;
+    mem[0xFFFC] = 0;
+    mem[0xFFFD] = 0;
+
+    CPU cpu = initialize_cpu(mem);
+    set_tick_cb(&on_system_tick);
+
+    execute(&cpu, 2);
+
+    exit(assert(cpu.X == 1));
+
 }
