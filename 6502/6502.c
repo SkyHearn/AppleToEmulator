@@ -30,7 +30,7 @@ void _set_byte_zp(CPU* cpu, uint8_t value)
     cpu->rw = 1;
 }
 
-void _get_byte_zp(CPU* cpu, uint8_t address) 
+void _get_byte(CPU* cpu, uint16_t address) 
 {
     cpu->ab = address;
     _tick_system(cpu, _calculate_pin_status(*cpu));
@@ -99,7 +99,7 @@ void execute(CPU* cpu, unsigned int cycles)
                _proceed(cpu);
                --cycles;
                
-               _get_byte_zp(cpu, cpu->db);
+               _get_byte(cpu, cpu->db);
                --cycles;
                
                cpu->A = cpu->db;
@@ -121,9 +121,34 @@ void execute(CPU* cpu, unsigned int cycles)
                 _tick_system(cpu, _calculate_pin_status(*cpu));
                 --cycles;
                 
-                _get_byte_zp(cpu, cpu->X + cpu->db);
+                _get_byte(cpu, cpu->X + cpu->db);
                 --cycles;
                 
+                cpu->A = cpu->db;
+
+                cpu->Z = cpu->A == 0 ? 1 : 0;
+                cpu->N = (1 & cpu->A) == 1 ? 1 : 0;
+
+                break;
+            }
+
+            // LDA absolute
+            case 0xAD:
+            {
+                uint16_t addr = 0;
+                
+                _proceed(cpu);
+                cycles--; 
+
+                addr += cpu->db;
+                addr <<= 8;
+
+                _proceed(cpu);
+                cycles--;
+                
+                _get_byte(cpu, addr);
+                cycles--;
+
                 cpu->A = cpu->db;
 
                 cpu->Z = cpu->A == 0 ? 1 : 0;
@@ -152,7 +177,7 @@ void execute(CPU* cpu, unsigned int cycles)
                 _proceed(cpu);
                 --cycles;
                
-                _get_byte_zp(cpu, cpu->db);
+                _get_byte(cpu, cpu->db);
                 --cycles;
                 
                 cpu->X = cpu->db;
@@ -174,7 +199,7 @@ void execute(CPU* cpu, unsigned int cycles)
                 _tick_system(cpu, _calculate_pin_status(*cpu));
                 --cycles;
                 
-                _get_byte_zp(cpu, (uint8_t) cpu->Y + cpu->db);
+                _get_byte(cpu, (uint8_t) cpu->Y + cpu->db);
                 --cycles;
 
                 cpu->X = cpu->db;
