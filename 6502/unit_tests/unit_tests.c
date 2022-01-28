@@ -85,9 +85,8 @@ void LDA_immediate_test()
     mem[1] = 0xFF;
     mem[0xFFFC] = 0x00;
     mem[0xFFFD] = 0x00;
-
-    CPU cpu = initialize_cpu(mem);
-    set_tick_cb(&on_system_tick);
+    
+    CPU cpu = initialize_cpu(mem, &on_system_tick);
 
     execute(&cpu, 2);
 
@@ -101,9 +100,8 @@ void LDA_neg_flag_test()
     mem[0xFFFC] = 0x00;
     mem[0xFFFD] = 0x00;
 
-    CPU cpu = initialize_cpu(mem);
+    CPU cpu = initialize_cpu(mem, &on_system_tick);
 
-    set_tick_cb(&on_system_tick);
     execute(&cpu, 2);
 
     exit(assert(cpu.N == 1));
@@ -117,9 +115,8 @@ void LDA_z_flag_test()
     mem[0xFFFC] = 0x00;
     mem[0xFFFD] = 0x00;
 
-    CPU cpu = initialize_cpu(mem);
+    CPU cpu = initialize_cpu(mem, &on_system_tick);
 
-    set_tick_cb(&on_system_tick);
     execute(&cpu, 2);
     
     exit(assert(cpu.Z == 1));
@@ -134,9 +131,9 @@ void STA_test()
     mem[0xFFFC] = 0x00;
     mem[0xFFFD] = 0x00;
 
-    CPU cpu = initialize_cpu(mem);
+    CPU cpu = initialize_cpu(mem, &on_system_tick);
 
-    set_tick_cb(&on_system_tick);
+
     execute(&cpu, 5);
    
     exit(assert(mem[0] == 0x69));
@@ -149,9 +146,8 @@ void LDA_zp_test()
     mem[0xFFFC] = 0x00;
     mem[0xFFFD] = 0x00;
 
-    CPU cpu = initialize_cpu(mem);
+    CPU cpu = initialize_cpu(mem, &on_system_tick);
 
-    set_tick_cb(&on_system_tick);
     execute(&cpu, 3);
 
     int rval = 0;
@@ -172,9 +168,8 @@ void LDA_zp_X_test()
     mem[0xFFFC] = 0;
     mem[0xFFFD] = 0;
 
-    CPU cpu = initialize_cpu(mem);
+    CPU cpu = initialize_cpu(mem, &on_system_tick);
 
-    set_tick_cb(&on_system_tick);
     execute(&cpu, 6);
     
     int rval = 0;
@@ -193,8 +188,7 @@ void LDX_immediate_test()
     mem[0xFFFC] = 0;
     mem[0xFFFD] = 0;
 
-    CPU cpu = initialize_cpu(mem);
-    set_tick_cb(&on_system_tick);
+    CPU cpu = initialize_cpu(mem, &on_system_tick);
 
     execute(&cpu, 2);
 
