@@ -8,4 +8,5 @@ add_library(6502
         include/6502.h
         6502-internal.h
 	6502.c
+        6502-helper.c
 )

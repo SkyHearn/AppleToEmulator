@@ -3,9 +3,6 @@
 
 #include "include/6502.h"
 
-// calls the function pointed to at *tick_cb
-void _tick_system(CPU*, PINS);
-
 // returns the status of pins on the cpu
 PINS _calculate_pin_status(CPU);
 

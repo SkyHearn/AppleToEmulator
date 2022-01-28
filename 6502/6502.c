@@ -2,54 +2,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void (*tick_cb) (CPU* cpu, PINS);
-
-void set_tick_cb(void (*cb) (CPU* cpu, PINS))
-{
-    tick_cb = cb;
-}
-
-void _tick_system(CPU* cpu, PINS ps)
-{
-    tick_cb(cpu, ps);
-}
-
-void _proceed(CPU* cpu) 
-{
-    cpu->ab = cpu->PC;
-    cpu->PC++;
-    _tick_system(cpu, _calculate_pin_status(*cpu));
-}
-
-void _set_byte_zp(CPU* cpu, uint8_t value) 
-{
-    cpu->ab = cpu->db;
-    cpu->rw = 0;
-    cpu->db = value;
-    _tick_system(cpu, _calculate_pin_status(*cpu));
-    cpu->rw = 1;
-}
-
-void _get_byte(CPU* cpu, uint16_t address) 
-{
-    cpu->ab = address;
-    _tick_system(cpu, _calculate_pin_status(*cpu));
-}
-
 void set_db(CPU* cpu, uint8_t value) { cpu->db = value; }
 
-PINS _calculate_pin_status(CPU cpu) 
-{
-    PINS pin_status;
-
-    pin_status.ab = cpu.ab;
-    pin_status.db = cpu.db;
-    pin_status.rw = cpu.rw;
-
-    return pin_status;
-}
-
-CPU initialize_cpu(uint8_t mem[]) 
+CPU initialize_cpu(uint8_t mem[], void (*cb) (CPU* cpu, PINS)) 
 {
     CPU cpu;
     
@@ -64,6 +19,8 @@ CPU initialize_cpu(uint8_t mem[])
     cpu.db = 0;
     
     cpu.rw = 1;
+
+    cpu.tick_cb = cb;
 
     return cpu;
 }
@@ -118,7 +75,7 @@ void execute(CPU* cpu, unsigned int cycles)
                 
                 cpu->ab = cpu->db;
                 cpu->PC++;
-                _tick_system(cpu, _calculate_pin_status(*cpu));
+                cpu->tick_cb(cpu, _calculate_pin_status(*cpu));
                 --cycles;
                 
                 _get_byte(cpu, cpu->X + cpu->db);
@@ -196,7 +153,7 @@ void execute(CPU* cpu, unsigned int cycles)
                 
                 cpu->ab = cpu->db;
                 cpu->PC++;
-                _tick_system(cpu, _calculate_pin_status(*cpu));
+                cpu->tick_cb(cpu, _calculate_pin_status(*cpu));
                 --cycles;
                 
                 _get_byte(cpu, (uint8_t) cpu->Y + cpu->db);

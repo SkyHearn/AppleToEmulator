@@ -3,6 +3,15 @@
 
 #include <stdint.h>
 
+struct PINS
+{
+    uint16_t ab;
+    uint8_t db;
+    uint8_t rw;
+};
+
+typedef struct PINS PINS;
+
 struct CPU
 {
     uint16_t PC;     // program counter
@@ -21,18 +30,11 @@ struct CPU
     uint16_t ab; // Address bus.
     uint8_t db; // Data Bus.
     uint8_t rw; // read write pin.
+
+    void (*tick_cb) (struct CPU* cpu, PINS);
 };
 
 typedef struct CPU CPU;
-
-struct PINS
-{
-    uint16_t ab;
-    uint8_t db;
-    uint8_t rw;
-};
-
-typedef struct PINS PINS;
 
 // set the databus.
 void set_db(CPU* cpu, uint8_t value);
@@ -46,6 +48,6 @@ void set_tick_cb(void (*cb) (CPU *cpu, PINS));
 // initialize the cpu to it's proper starting values, 
 // including setting the program counter to the address
 // pointed to at the reset vector.
-CPU initialize_cpu(uint8_t mem[]);
+CPU initialize_cpu(uint8_t mem[], void (*cb) (CPU* cpu, PINS));
 
 #endif
