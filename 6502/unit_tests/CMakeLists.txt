@@ -36,3 +36,7 @@ add_test(NAME LDA_ZP_X
 add_test(NAME LDX_immidiate_test
          COMMAND "${PROJECT_BINARY_DIR}/unit_tests/unit_tests"
          "6")
+
+add_test(NAME LDA_absolute_test 
+         COMMAND "${PROJECT_BINARY_DIR}/unit_tests/unit_tests"
+         "7")

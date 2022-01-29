@@ -17,5 +17,6 @@ void STA_test();
 void LDA_zp_test();
 void LDA_zp_X_test();
 void LDX_immediate_test();
+void LDA_abs_test();
 
 #endif

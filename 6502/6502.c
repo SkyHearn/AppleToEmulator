@@ -96,12 +96,11 @@ void execute(CPU* cpu, unsigned int cycles)
                 
                 _proceed(cpu);
                 cycles--; 
-
                 addr += cpu->db;
-                addr <<= 8;
 
                 _proceed(cpu);
                 cycles--;
+                addr += (((uint16_t)cpu->db) << 8);                
                 
                 _get_byte(cpu, addr);
                 cycles--;

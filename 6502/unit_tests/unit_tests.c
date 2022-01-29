@@ -62,6 +62,9 @@ int main(int argc, char** argv)
         case 6:
             LDX_immediate_test();
             break;
+        case 7:
+            LDA_abs_test();
+            break;
         default:
             printf("No test with number: %ld \n", test_num);
             return 2;
@@ -194,4 +197,20 @@ void LDX_immediate_test()
 
     exit(assert(cpu.X == 1));
 
+}
+
+void LDA_abs_test() 
+{
+    mem[0] = 0xad;
+    mem[1] = 0xFF;
+    mem[2] = 0xFF;
+    mem[0xFFFC] = 0;
+    mem[0xFFFD] = 0;
+    mem[0xFFFF] = 69;
+
+    CPU cpu = initialize_cpu(mem, &on_system_tick);
+
+    execute(&cpu, 4);
+
+    exit(assert(cpu.A == 69));
 }
