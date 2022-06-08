@@ -15,4 +15,7 @@ void _set_byte_zp(CPU* cpu, uint8_t value);
 
 // sets the data bus to the value of a byte stored in memory.
 void _get_byte(CPU* cpu, uint16_t address);
+
+// set the values of the negative and zero registers.
+void _set_zn_registers(CPU* cpu, uint8_t value);
 #endif

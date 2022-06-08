@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+// The pins struct is used in functions that return the status of groups 
+// of pins stored in more than one variable. Eg. _calculate_pin_status()
 struct PINS
 {
     uint16_t ab;

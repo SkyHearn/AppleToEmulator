@@ -32,3 +32,9 @@ PINS _calculate_pin_status(CPU cpu)
 
     return pin_status;
 }
+
+void _set_zn_registers(CPU* cpu, uint8_t value) 
+{
+    cpu->Z = value == 0 ? 1 : 0;
+    cpu->N = (1 & value) == 1 ? 1 : 0;
+}

@@ -12,7 +12,8 @@ CPU initialize_cpu(uint8_t mem[], void (*cb) (CPU* cpu, PINS))
     cpu.PC = (mem[0xFFFD] * 256) + mem[0xFFFC];
     
     cpu.SP = 0;
-    cpu.A = cpu.X = cpu.Y = cpu.C = cpu.Z = cpu.D = cpu.B = cpu.O = cpu.N = 0;
+    cpu.A = 0xaa;
+    cpu.X = cpu.Y = cpu.C = cpu.Z = cpu.D = cpu.B = cpu.O = cpu.N = 0;
     cpu.I = 1;
     
     cpu.ab = 0;
@@ -44,9 +45,7 @@ void execute(CPU* cpu, unsigned int cycles)
                 cpu->A = cpu->db;
             
                 // set the zero and negitive flags to their proper values
-                cpu->Z = cpu->A == 0 ? 1 : 0;
-                cpu->N = (1 & cpu->A) == 1 ? 1 : 0;
-            
+                _set_zn_registers(cpu, cpu->A);
                 break;
             }
             
@@ -61,8 +60,7 @@ void execute(CPU* cpu, unsigned int cycles)
                
                cpu->A = cpu->db;
 
-               cpu->Z = cpu->A == 0 ? 1 : 0;
-               cpu->N = (1 & cpu->A) == 1 ? 1 : 0;
+               _set_zn_registers(cpu, cpu->A);
 
                break;
             }
@@ -83,8 +81,7 @@ void execute(CPU* cpu, unsigned int cycles)
                 
                 cpu->A = cpu->db;
 
-                cpu->Z = cpu->A == 0 ? 1 : 0;
-                cpu->N = (1 & cpu->A) == 1 ? 1 : 0;
+                _set_zn_registers(cpu, cpu->A);
 
                 break;
             }
@@ -107,8 +104,7 @@ void execute(CPU* cpu, unsigned int cycles)
 
                 cpu->A = cpu->db;
 
-                cpu->Z = cpu->A == 0 ? 1 : 0;
-                cpu->N = (1 & cpu->A) == 1 ? 1 : 0;
+                _set_zn_registers(cpu, cpu->A);
 
                 break;
             }
@@ -121,8 +117,7 @@ void execute(CPU* cpu, unsigned int cycles)
                 
                 cpu->X = cpu->db;
 
-                cpu->Z = cpu->X == 0 ? 1 : 0;
-                cpu->N = (1 & cpu->X) == 1 ? 1 : 0;
+                _set_zn_registers(cpu, cpu->X);
 
                 break;
             }
@@ -138,8 +133,7 @@ void execute(CPU* cpu, unsigned int cycles)
                 
                 cpu->X = cpu->db;
 
-                cpu->Z = cpu->X == 0 ? 1 : 0;
-                cpu->N = (1 & cpu->X) == 1 ? 1 : 0;
+                _set_zn_registers(cpu, cpu->X);
 
                 break;           
             }
@@ -160,8 +154,7 @@ void execute(CPU* cpu, unsigned int cycles)
 
                 cpu->X = cpu->db;
 
-                cpu->Z = cpu->X == 0 ? 1 : 0;
-                cpu->N = (1 & cpu->X) == 1 ? 1 : 0;
+                _set_zn_registers(cpu, cpu->X);
 
                 break;
             }
